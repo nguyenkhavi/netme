@@ -1,0 +1,27 @@
+{
+  "name": "notion-single-page",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "build:tailwind": "tailwind build styles/globals.css -o styles/tailwind.css"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.6",
+    "next": "11.1.2",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-query": "^3.39.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.3",
+    "autoprefixer": "^10.4.13",
+    "eslint": "7.32.0",
+    "eslint-config-next": "11.1.2",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.2.4"
+  }
+}

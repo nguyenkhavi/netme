@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  padding: 16px;
+  margin: 0;
+  font-family: Poppins, sans-serif;
+  box-sizing: border-box;
+}
+
+a {
+  width: 280px;
+  background-color: rgb(35, 192, 127);
+  color: white;
+  padding: 12px;
+  margin-bottom: 16px;
+  text-decoration: none;
+  text-align: center;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h4 {
+  color: #232323;
+}
+
+.avatar {
+  border-radius: 50%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
