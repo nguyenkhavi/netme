@@ -1,9 +1,26 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import Link from "next/link";
-import PagesDropdown from "../component/Dropdowns/PagesDropdown";
+import { firebaseAuth } from "../services/firebase";
+import { useSignOut } from "../services/auth/mutation";
+import { useRouter } from "next/router";
+import { useAuthState } from "react-firebase-hooks/auth";
 
-export default function Navbar(props) {
-  const [navbarOpen, setNavbarOpen] = React.useState(false);
+export default function Navbar() {
+  const router = useRouter();
+  const { mutate: signOut } = useSignOut({});
+  const [user] = useAuthState(firebaseAuth);
+
+  const _loggedIn = useMemo(() => !!user?.uid, [user?.uid]);
+  const _buttonText = useMemo(
+    () => (_loggedIn ? "Sign out" : "Log in"),
+    [_loggedIn]
+  );
+  const _handler = useCallback(() => {
+    if (_loggedIn) {
+      signOut(undefined);
+    }
+    router.push("auth/login");
+  }, [_loggedIn, router, signOut]);
   return (
     <>
       <nav className="top-0 absolute z-50 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg">
@@ -20,8 +37,10 @@ export default function Navbar(props) {
             <button
               className="bg-white text-blueGray-700 active:bg-blueGray-50 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
               type="button"
+              onClick={_handler}
             >
-              <i className="fas fa-arrow-alt-circle-down"></i> Log in
+              <i className="fas fa-arrow-alt-circle-down"></i>
+              {_buttonText}
             </button>
           </div>
         </div>

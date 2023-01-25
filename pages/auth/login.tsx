@@ -1,11 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 // layout for page
 
 import AuthLayout from "../../layouts/Auth";
+import { useRouter } from "next/router";
+import { useLogin } from "../../services/auth/mutation";
+import { TLogIn } from "../../services/auth/dto";
 
 export default function Login() {
+  const router = useRouter();
+  const { mutate: login, isLoading } = useLogin({
+    onSuccess: () => {
+      router.push("/profile");
+    },
+  });
+  const [state, setState] = useState<TLogIn>({
+    email: "",
+    password: "",
+  });
+  const handleChange =
+    (name: keyof TLogIn) =>
+    ({ target }) => {
+      setState((prev) => ({
+        ...prev,
+        [name]: target.value,
+      }));
+    };
+
+  const handleLogin = () => {
+    login(state);
+  };
   return (
     <>
       <div className="container mx-auto px-4 h-full">
@@ -23,14 +49,24 @@ export default function Login() {
                     className="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-2 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
                     type="button"
                   >
-                    <img alt="..." className="w-5 mr-1" src="/img/github.svg" />
+                    <Image
+                      alt="..."
+                      src="/img/github.svg"
+                      width={16}
+                      height={16}
+                    />{" "}
                     Github
                   </button>
                   <button
                     className="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
                     type="button"
                   >
-                    <img alt="..." className="w-5 mr-1" src="/img/google.svg" />
+                    <Image
+                      alt="..."
+                      src="/img/google.svg"
+                      width={16}
+                      height={16}
+                    />{" "}
                     Google
                   </button>
                 </div>
@@ -52,6 +88,8 @@ export default function Login() {
                       type="email"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Email"
+                      value={state.email}
+                      onChange={handleChange("email")}
                     />
                   </div>
 
@@ -66,6 +104,8 @@ export default function Login() {
                       type="password"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Password"
+                      value={state.password}
+                      onChange={handleChange("password")}
                     />
                   </div>
                   <div>
@@ -85,6 +125,8 @@ export default function Login() {
                     <button
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                       type="button"
+                      onClick={handleLogin}
+                      disabled={isLoading}
                     >
                       Sign In
                     </button>

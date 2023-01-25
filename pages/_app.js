@@ -7,13 +7,14 @@ import Router from "next/router";
 import PageChange from "../component/PageChange/PageChange";
 
 // import "@fortawesome/fontawesome-free/css/all.min.css";
-import '../styles/tailwind.css'
-import '../services/firebase'
+import "../styles/tailwind.css";
+import "../services/firebase";
+import { QueryClient, QueryClientProvider } from "react-query";
 // import "styles/global.css";
 
+const queryClient = new QueryClient();
 
 Router.events.on("routeChangeStart", (url) => {
-  console.log(`Loading: ${url}`);
   document.body.classList.add("body-page-transition");
   ReactDOM.render(
     <PageChange path={url} />,
@@ -43,7 +44,6 @@ export default class MyApp extends App {
     const { Component, pageProps } = this.props;
 
     const Layout = Component.layout || (({ children }) => <>{children}</>);
-
     return (
       <React.Fragment>
         <Head>
@@ -53,9 +53,11 @@ export default class MyApp extends App {
           />
           <title>Notus NextJS by Creative Tim</title>
         </Head>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <QueryClientProvider client={queryClient}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </QueryClientProvider>
       </React.Fragment>
     );
   }

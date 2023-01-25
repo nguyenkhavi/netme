@@ -1,10 +1,36 @@
-import React from "react";
-
+import React, { useState } from "react";
+import Image from "next/image";
 // layout for page
 
 import AuthLayout from "../../layouts/Auth";
+import { TRegister } from "../../services/auth/dto";
+import { useRegister } from "../../services/auth/mutation";
+import { useRouter } from "next/router";
 
 export default function Register() {
+  const router = useRouter();
+  const { mutate: register, isLoading } = useRegister({
+    onSuccess: () => {
+      router.push("/profile");
+    },
+  });
+  const [state, setState] = useState<TRegister>({
+    email: "",
+    password: "",
+    fullName: "",
+  });
+  const handleChange =
+    (name: keyof TRegister) =>
+    ({ target }) => {
+      setState((prev) => ({
+        ...prev,
+        [name]: target.value,
+      }));
+    };
+
+  const handleRegister = () => {
+    register(state);
+  };
   return (
     <>
       <div className="container mx-auto px-4 h-full">
@@ -19,17 +45,27 @@ export default function Register() {
                 </div>
                 <div className="btn-wrapper text-center">
                   <button
-                    className="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-2 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
+                    className="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-2 mb-1 uppercase shadow hover:shadow-md inline-flex items-center text-xs ease-linear transition-all duration-150"
                     type="button"
                   >
-                    <img alt="..." className="w-5 mr-1" src="/img/github.svg" />
+                    <Image
+                      alt="..."
+                      width={16}
+                      height={16}
+                      src="/img/github.svg"
+                    />{" "}
                     Github
                   </button>
                   <button
                     className="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
                     type="button"
                   >
-                    <img alt="..." className="w-5 mr-1" src="/img/google.svg" />
+                    <Image
+                      alt="..."
+                      width={16}
+                      height={16}
+                      src="/img/google.svg"
+                    />{" "}
                     Google
                   </button>
                 </div>
@@ -51,6 +87,8 @@ export default function Register() {
                       type="email"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Name"
+                      value={state.fullName}
+                      onChange={handleChange("fullName")}
                     />
                   </div>
 
@@ -65,6 +103,8 @@ export default function Register() {
                       type="email"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Email"
+                      value={state.email}
+                      onChange={handleChange("email")}
                     />
                   </div>
 
@@ -79,6 +119,8 @@ export default function Register() {
                       type="password"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Password"
+                      value={state.password}
+                      onChange={handleChange("password")}
                     />
                   </div>
 
@@ -106,6 +148,8 @@ export default function Register() {
                     <button
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                       type="button"
+                      onClick={handleRegister}
+                      disabled={isLoading}
                     >
                       Create Account
                     </button>

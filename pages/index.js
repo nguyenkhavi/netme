@@ -7,7 +7,10 @@ export default function Home({ title, image, links }) {
       <Head>
         <title>Notion Links</title>
         <meta name="description" content="Notion links | Desi Code" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -39,11 +42,11 @@ export const getStaticProps = async () => {
   const links = [
     {
       name: "Facebook",
-      url:"/"
+      url: "/",
     },
     {
       name: "Facebook",
-      url:"/"
+      url: "/",
     },
   ];
   // let image = "";
@@ -61,7 +64,7 @@ export const getStaticProps = async () => {
     props: {
       title: "Heheheh",
       links,
-      image:"https://placeholder.com/",
+      image: "https://placeholder.com/",
     },
     revalidate: 10,
   };
