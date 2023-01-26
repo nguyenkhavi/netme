@@ -20,7 +20,7 @@ export const useGetUserProfile = (
   >
 ) => {
   const [user] = useAuthState(firebaseAuth);
-  const docRef = doc(userProfileColRef, user?.uid || "");
+  const docRef = doc(userProfileColRef, user?.uid || "DEFAULT_PATH");
 
   return useQuery<
     DocumentSnapshot<DocumentData>,
