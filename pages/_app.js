@@ -7,10 +7,12 @@ import Router from "next/router";
 import PageChange from "../component/PageChange/PageChange";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import "react-toastify/dist/ReactToastify.css";
 import "../styles/tailwind.css";
 import "../services/firebase";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { INFO } from "../constants/author";
+import { ToastContainer } from "react-toastify";
 // import "styles/global.css";
 
 const queryClient = new QueryClient();
@@ -32,7 +34,7 @@ Router.events.on("routeChangeError", () => {
 });
 
 export default class MyApp extends App {
-  static async getInitialProps({ Component, router, ctx }) {
+  static async getInitialProps({ Component, _, ctx }) {
     let pageProps = {};
 
     if (Component.getInitialProps) {
@@ -60,6 +62,7 @@ export default class MyApp extends App {
           <Layout>
             <Component {...pageProps} />
           </Layout>
+          <ToastContainer />
         </QueryClientProvider>
       </React.Fragment>
     );

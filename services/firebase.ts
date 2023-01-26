@@ -21,11 +21,22 @@ const firebaseConfig = {
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 
+export const AUTH_ERROR_MAP = {
+  "auth/invalid-email": "The email address is not valid",
+  "auth/user-disabled":
+    "The user corresponding to the given email has been disabled",
+  "auth/user-not-found": "There is no user corresponding to the given email",
+  "auth/wrong-password": "The password is invalid for the given email",
+  "auth/email-already-in-use":
+    "There already exists an account with the given email address.",
+  "auth/weak-password": "The password is not strong enough.",
+  "auth/account-exists-with-different-credential":
+    "There already exists an account with the email address asserted by the credential",
+};
 export const firebaseAuth = getAuth(app);
 firebaseAuth.useDeviceLanguage();
 export const googleProvider = new GoogleAuthProvider();
 googleProvider.addScope("https://www.googleapis.com/auth/contacts.readonly");
-
 export const githubProvider = new GithubAuthProvider();
 githubProvider.addScope("repo");
 

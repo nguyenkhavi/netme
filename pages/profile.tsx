@@ -6,6 +6,7 @@ import { useCreateChannel } from "../services/channel/mutation";
 import { TCreateChannel } from "../services/channel/dto";
 import { useGetChannelsByUserId } from "../services/channel/query";
 import { useGetUserProfile } from "../services/userProfile/query";
+import { toast } from "react-toastify";
 
 export default function Profile() {
   const [showModal, setShowModal] = useState(false);
@@ -18,6 +19,17 @@ export default function Profile() {
   const { data = [], refetch } = useGetChannelsByUserId();
   const { mutate: createChannel, isLoading } = useCreateChannel({
     onSuccess: () => {
+      toast(`Created successfully!`, {
+        position: "top-right",
+        type: "success",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       refetch();
     },
   });

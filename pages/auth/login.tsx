@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 
 // layout for page
 
@@ -9,12 +8,40 @@ import { useRouter } from "next/router";
 import { useLogin } from "../../services/auth/mutation";
 import { TLogIn } from "../../services/auth/dto";
 import SocialLogin from "../../component/Auth/SocialLogin";
+import { toast } from "react-toastify";
+import { AUTH_ERROR_MAP } from "../../services/firebase";
 
 export default function Login() {
   const router = useRouter();
   const { mutate: login, isLoading } = useLogin({
-    onSuccess: () => {
+    onSuccess: (resp) => {
+      toast(`🦄 Welcome back ${resp.user.displayName}!`, {
+        position: "top-right",
+        type: "success",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       router.push("/profile");
+    },
+    onError: (error) => {
+      const code = error.code;
+      const message = AUTH_ERROR_MAP[code];
+      toast(`${message}!`, {
+        position: "top-right",
+        type: "error",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     },
   });
   const [state, setState] = useState<TLogIn>({

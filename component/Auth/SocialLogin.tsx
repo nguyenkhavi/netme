@@ -2,13 +2,44 @@ import React from "react";
 import Image from "next/image";
 import { useSocialLogin } from "../../services/auth/mutation";
 import { useRouter } from "next/router";
-import { githubProvider, googleProvider } from "../../services/firebase";
+import {
+  AUTH_ERROR_MAP,
+  githubProvider,
+  googleProvider,
+} from "../../services/firebase";
+import { toast } from "react-toastify";
 
 function SocialLogin() {
   const router = useRouter();
   const { mutate: socialLogin } = useSocialLogin({
-    onSuccess: () => {
+    onSuccess: (resp) => {
+      toast(`🦄 Welcome back ${resp.user.displayName}!`, {
+        position: "top-right",
+        type: "success",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       router.push("/profile");
+    },
+    onError: (error) => {
+      const code = error.code;
+      const message = AUTH_ERROR_MAP[code];
+      toast(`${message}!`, {
+        position: "top-right",
+        type: "error",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     },
   });
   return (

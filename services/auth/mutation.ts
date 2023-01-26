@@ -55,7 +55,7 @@ export const useLogin = (
 
 export const useSocialLogin = ({
   ...options
-}: UseMutationOptions<any, TError, { provider: AuthProvider }>) => {
+}: UseMutationOptions<UserCredential, TError, { provider: AuthProvider }>) => {
   const { mutate: createUserProfile } = useCreateUserProfile({});
 
   return useMutation(
