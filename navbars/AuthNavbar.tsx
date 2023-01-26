@@ -4,6 +4,7 @@ import { firebaseAuth } from "../services/firebase";
 import { useSignOut } from "../services/auth/mutation";
 import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { INFO } from "../constants/author";
 
 export default function Navbar() {
   const router = useRouter();
@@ -25,13 +26,13 @@ export default function Navbar() {
     <>
       <nav className="top-0 absolute z-50 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg">
         <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
-          <div className="w-full relative flex justify-between">
+          <div className="w-full relative flex justify-between items-center">
             <Link href="/">
               <a
-                className="text-white text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase"
+                className="text-white text-2xl font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap"
                 href="#pablo"
               >
-                NetMe
+                {INFO.PRODUCT}
               </a>
             </Link>
             <button

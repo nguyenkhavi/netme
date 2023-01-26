@@ -10,6 +10,7 @@ import PageChange from "../component/PageChange/PageChange";
 import "../styles/tailwind.css";
 import "../services/firebase";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { INFO } from "../constants/author";
 // import "styles/global.css";
 
 const queryClient = new QueryClient();
@@ -51,7 +52,9 @@ export default class MyApp extends App {
             name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
           />
-          <title>Notus NextJS by Creative Tim</title>
+          <title>
+            {INFO.PRODUCT} by {INFO.WEBSITE}
+          </title>
         </Head>
         <QueryClientProvider client={queryClient}>
           <Layout>
