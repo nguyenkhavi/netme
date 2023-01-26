@@ -6,7 +6,7 @@ import Router from "next/router";
 
 import PageChange from "../component/PageChange/PageChange";
 
-// import "@fortawesome/fontawesome-free/css/all.min.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import "../styles/tailwind.css";
 import "../services/firebase";
 import { QueryClient, QueryClientProvider } from "react-query";

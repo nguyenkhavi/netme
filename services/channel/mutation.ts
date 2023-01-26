@@ -1,17 +1,10 @@
-import {
-  addDoc,
-  collection,
-  DocumentData,
-  serverTimestamp,
-} from "firebase/firestore";
+import { doc, DocumentData, getDoc, setDoc } from "firebase/firestore";
 import { uuidv4 } from "@firebase/util";
 import { useMutation, UseMutationOptions } from "react-query";
 import { TError } from "../../types/global";
-import { firebaseAuth, firestore } from "../firebase";
+import { channelColRef, firebaseAuth } from "../firebase";
 import { TCreateChannel } from "./dto";
 import { useAuthState } from "react-firebase-hooks/auth";
-
-export const channelColRef = collection(firestore, "channels");
 
 export const useCreateChannel = (
   options: UseMutationOptions<DocumentData, TError, TCreateChannel>
@@ -19,13 +12,18 @@ export const useCreateChannel = (
   const [user] = useAuthState(firebaseAuth);
 
   return useMutation<DocumentData, TError, TCreateChannel>(
-    (dto) =>
-      addDoc(channelColRef, {
+    (dto) => {
+      const ID = uuidv4();
+      const docRef = doc(channelColRef, ID);
+
+      setDoc(docRef, {
         ...dto,
         userID: user?.uid,
-        createdAt: serverTimestamp(),
-        ID: uuidv4(),
-      }),
+        createdAt: new Date().toISOString(),
+        ID,
+      });
+      return getDoc(docRef);
+    },
     {
       ...options,
     }

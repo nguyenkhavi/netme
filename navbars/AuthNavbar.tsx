@@ -20,8 +20,13 @@ export default function Navbar() {
     if (_loggedIn) {
       signOut(undefined);
     }
-    router.push("auth/login");
+    router.replace("auth/login");
   }, [_loggedIn, router, signOut]);
+  const _handleProfile = useCallback(() => {
+    if (_loggedIn) {
+      router.replace("profile");
+    }
+  }, [_loggedIn, router]);
   return (
     <>
       <nav className="top-0 absolute z-50 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg">
@@ -35,14 +40,25 @@ export default function Navbar() {
                 {INFO.PRODUCT}
               </a>
             </Link>
-            <button
-              className="bg-white text-blueGray-700 active:bg-blueGray-50 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
-              type="button"
-              onClick={_handler}
-            >
-              <i className="fas fa-arrow-alt-circle-down"></i>
-              {_buttonText}
-            </button>
+            <div>
+              {_loggedIn && (
+                <button
+                  className="lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
+                  type="button"
+                  onClick={_handleProfile}
+                >
+                  <i className="fa-solid fa-user text-white"></i>
+                </button>
+              )}
+
+              <button
+                className="bg-white text-blueGray-700 active:bg-blueGray-50 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
+                type="button"
+                onClick={_handler}
+              >
+                {_buttonText}
+              </button>
+            </div>
           </div>
         </div>
       </nav>

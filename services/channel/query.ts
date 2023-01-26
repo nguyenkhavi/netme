@@ -9,9 +9,8 @@ import { useMemo } from "react";
 import { useQuery } from "react-query";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { formatListDocument } from "../../helper";
-import { firebaseAuth } from "../firebase";
+import { channelColRef, firebaseAuth } from "../firebase";
 import { TChannel } from "./dto";
-import { channelColRef } from "./mutation";
 
 export const useGetChannelsByUserId = () => {
   const [user] = useAuthState(firebaseAuth);

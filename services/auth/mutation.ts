@@ -6,13 +6,16 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { useMutation, UseMutationOptions } from "react-query";
+import { convertToSlug } from "../../helper";
 import { TError } from "../../types/global";
 import { firebaseAuth } from "../firebase";
+import { useCreateUserProfile } from "../userProfile/mutation";
 import { TLogIn, TRegister } from "./dto";
 
 export const useRegister = (
   options: UseMutationOptions<UserCredential, TError, TRegister>
 ) => {
+  const { mutate: createUserProfile } = useCreateUserProfile({});
   return useMutation<UserCredential, TError, TRegister>(
     (dto) =>
       createUserWithEmailAndPassword(
@@ -22,6 +25,11 @@ export const useRegister = (
       ).then((userCredential) => {
         updateProfile(userCredential.user, {
           displayName: dto.displayName,
+        });
+        const slug = convertToSlug(dto.displayName);
+        createUserProfile({
+          userID: userCredential.user.uid,
+          slug,
         });
         return userCredential;
       }),
@@ -33,7 +41,12 @@ export const useLogin = (
   options: UseMutationOptions<UserCredential, TError, TLogIn>
 ) => {
   return useMutation<UserCredential, TError, TLogIn>(
-    (dto) => signInWithEmailAndPassword(firebaseAuth, dto.email, dto.password),
+    (dto) =>
+      signInWithEmailAndPassword(firebaseAuth, dto.email, dto.password).then(
+        (userCredential) => {
+          return userCredential;
+        }
+      ),
     options
   );
 };
