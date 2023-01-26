@@ -15,7 +15,13 @@ function Button(props) {
   };
 
   return (
-    <a href={props.url} className="button" style={style}>
+    <a
+      href={props.url}
+      className="button"
+      target="_blank"
+      style={style}
+      rel="noreferrer"
+    >
       {props.name}
     </a>
   );
