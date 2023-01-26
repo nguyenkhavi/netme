@@ -4,6 +4,8 @@ import {
   signOut,
   UserCredential,
   updateProfile,
+  signInWithPopup,
+  AuthProvider,
 } from "firebase/auth";
 import { useMutation, UseMutationOptions } from "react-query";
 import { convertToSlug } from "../../helper";
@@ -47,6 +49,27 @@ export const useLogin = (
           return userCredential;
         }
       ),
+    options
+  );
+};
+
+export const useSocialLogin = ({
+  ...options
+}: UseMutationOptions<any, TError, { provider: AuthProvider }>) => {
+  const { mutate: createUserProfile } = useCreateUserProfile({});
+
+  return useMutation(
+    ({ provider }) =>
+      signInWithPopup(firebaseAuth, provider).then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        // const credential = GoogleAuthProvider.credentialFromResult(result);
+        const slug = convertToSlug(result?.user?.displayName);
+        createUserProfile({
+          userID: result.user?.uid,
+          slug,
+        });
+        return result;
+      }),
     options
   );
 };

@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, GithubAuthProvider, GoogleAuthProvider } from "firebase/auth";
 import { collection, getFirestore } from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -22,6 +22,12 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 
 export const firebaseAuth = getAuth(app);
+firebaseAuth.useDeviceLanguage();
+export const googleProvider = new GoogleAuthProvider();
+googleProvider.addScope("https://www.googleapis.com/auth/contacts.readonly");
+
+export const githubProvider = new GithubAuthProvider();
+githubProvider.addScope("repo");
 
 export const firestore = getFirestore(app);
 export const channelColRef = collection(firestore, "channels");
