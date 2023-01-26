@@ -1,3 +1,62 @@
+
+.profile-about {
+  margin-bottom: 5px;
+  font-size: 120%;
+  font-weight: bold;
+}
+.container-linktree {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  padding: 24px;
+}
+.profile {
+  max-width: 600px;
+}
+
+/*------- PROFILE -------*/
+.profile .profile-picture {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.profile .profile-picture img {
+  border-radius: 50%;
+  border: solid 2px black;
+  height: auto;
+  width: 128px;
+}
+.profile .profile-fullname {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+.profile .profile-slug {
+  font-weight: 300;
+  font-style: italic;
+
+}
+.profile .profile-fullname .profile-fullname-check_mark {
+  margin-left: 3px;
+  color: #4FB6EC;
+}
+.profile .profile-bio {
+  margin-bottom: 30px;
+}
+.profile .social_media {
+  margin: auto;
+}
+.profile .social_media .button {
+  margin-bottom: 30px;
+  padding: 15px 0;
+  text-align: center;
+  text-transform: capitalize;
+  font-weight: bold;
+  border: solid 2px black;
+  background-color: #E07A5F;
+  box-shadow: black 7px 7px 0;
+}
 /*! tailwindcss v2.0.4 | MIT License | https://tailwindcss.com */
 
 /*! modern-normalize v1.0.0 | MIT License | https://github.com/sindresorhus/modern-normalize */
@@ -4156,54 +4215,4 @@ select {
 }
 
 @media (min-width: 1536px) {
-}
-
-h1 {
-  margin-bottom: 5px;
-  font-size: 120%;
-  font-weight: bold;
-}
-.container-linktree {
-  display: flex;
-  justify-content: center;
-  align-self: center;
-}
-
-
-/*------- PROFILE -------*/
-.profile .profile-picture {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 10px;
-}
-.profile .profile-picture img {
-  border-radius: 50%;
-  border: solid 2px black;
-  height: auto;
-  width: 128px;
-}
-.profile .profile-fullname {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.profile .profile-fullname .profile-fullname-check_mark {
-  margin-left: 3px;
-  color: #4FB6EC;
-}
-.profile .profile-bio {
-  margin-bottom: 30px;
-}
-.profile .social_media {
-  margin: auto;
-}
-.profile .social_media .button {
-  margin-bottom: 30px;
-  padding: 15px 0;
-  text-align: center;
-  text-transform: capitalize;
-  font-weight: bold;
-  border: solid 2px black;
-  background-color: #E07A5F;
-  box-shadow: black 7px 7px 0;
 }
