@@ -5,6 +5,7 @@ module.exports = {
   content: ["./**/*.html", "./*.html", "./**/*.js", "./*.js"],
   theme: {
     colors: {
+      background: "#F4F1DE",
       ...colors,
     },
     extend: {

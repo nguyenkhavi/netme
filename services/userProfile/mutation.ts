@@ -20,7 +20,6 @@ export const useCreateUserProfile = (
       setDoc(docsRef, {
         createdAt: new Date().toISOString(),
         ...dto,
-        userID: user?.uid,
         updatedAt: new Date().toISOString(),
       });
       return getDoc(docsRef);

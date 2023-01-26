@@ -12,11 +12,11 @@ export default function Profile() {
   const [showModal, setShowModal] = useState(false);
   const { data: userProfile } = useGetUserProfile({
     onSuccess: (profile) => {
-      window.location.hash = profile.slug;
+      if (profile?.slug) window.location.hash = profile?.slug;
     },
   });
 
-  const { data = [], refetch } = useGetChannelsByUserId();
+  const { data = [], refetch } = useGetChannelsByUserId({});
   const { mutate: createChannel, isLoading } = useCreateChannel({
     onSuccess: () => {
       toast(`Created successfully!`, {

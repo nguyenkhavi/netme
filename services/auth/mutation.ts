@@ -8,7 +8,7 @@ import {
   AuthProvider,
 } from "firebase/auth";
 import { useMutation, UseMutationOptions } from "react-query";
-import { convertToSlug } from "../../helper";
+import { convertToSlug, onlyPrimitives } from "../../helper";
 import { TError } from "../../types/global";
 import { firebaseAuth } from "../firebase";
 import { useCreateUserProfile } from "../userProfile/mutation";
@@ -28,9 +28,9 @@ export const useRegister = (
         updateProfile(userCredential.user, {
           displayName: dto.displayName,
         });
-        const slug = convertToSlug(dto.displayName);
+        const slug = convertToSlug(dto.displayName) || dto.email.split("@")[0];
         createUserProfile({
-          userID: userCredential.user.uid,
+          ...onlyPrimitives(userCredential.user),
           slug,
         });
         return userCredential;
@@ -63,9 +63,11 @@ export const useSocialLogin = ({
       signInWithPopup(firebaseAuth, provider).then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         // const credential = GoogleAuthProvider.credentialFromResult(result);
-        const slug = convertToSlug(result?.user?.displayName);
+        const slug =
+          convertToSlug(result?.user?.displayName) ||
+          result.user.email.split("@")[0];
         createUserProfile({
-          userID: result.user?.uid,
+          ...onlyPrimitives(result.user),
           slug,
         });
         return result;

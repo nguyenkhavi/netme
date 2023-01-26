@@ -1,8 +1,7 @@
 import { User } from "firebase/auth";
 import { TTimestamp } from "../../types/global";
 
-export type TCreateUserProfile = {
-  userID: string;
+export type TCreateUserProfile = Partial<User> & {
   slug?: string;
   location?: string;
   jobTitles?: string[];
