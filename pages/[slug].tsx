@@ -52,7 +52,7 @@ function LinkTree() {
             </h1>
             <h2 className="profile-slug">@{slug}</h2>
             <div className="profile-bio  mt-2">
-              {(userProfile.jobTitles || []).join(" / ")}
+              {(userProfile?.jobTitles || []).join(" / ")}
             </div>
           </div>
 
