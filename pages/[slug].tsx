@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { GetServerSideProps } from "next";
 import LinkTreeLayout from "../layouts/LinkTree";
 import { getDocs, limit, query, where } from "firebase/firestore";
@@ -11,29 +11,11 @@ import { TChannel } from "../services/channel/dto";
 import FooterSmall from "../footers/FooterSmall";
 import { NextSeoProps } from "next-seo";
 import { INFO } from "../constants/author";
+import { useUpdateChannel } from "../services/channel/mutation";
 
 const colors = Array(10)
   .fill(["#F4F1DE", "#E07A5F", "#3D405B", "#81B29A", "#F2CC8F"])
   .flat();
-
-function Button(props) {
-  const style = {
-    backgroundColor: colors[props.index],
-    color: colors[props.index] === "#3D405B" ? "white" : undefined,
-  };
-
-  return (
-    <a
-      href={props.url}
-      className="button"
-      target="_blank"
-      style={style}
-      rel="noreferrer"
-    >
-      {props.name}
-    </a>
-  );
-}
 
 const LinkTree = ({ userProfile, channels }: TProps) => {
   const seoData = useMemo<NextSeoProps>(() => {
@@ -65,6 +47,37 @@ const LinkTree = ({ userProfile, channels }: TProps) => {
     userProfile.photoURL,
     userProfile.slug,
   ]);
+  const { mutate: updateChannel } = useUpdateChannel({});
+
+  const renderItem = useCallback(
+    (item: TChannel, index: number) => {
+      const style = {
+        backgroundColor: colors[index],
+        color: colors[index] === "#3D405B" ? "white" : undefined,
+      };
+
+      return (
+        <a
+          key={item.ID}
+          href={item.url}
+          className="button"
+          target="_blank"
+          style={style}
+          rel="noreferrer"
+          onClick={() =>
+            updateChannel({
+              ID: item.ID,
+              totalClick: (item.totalClick || 0) + 1,
+            })
+          }
+        >
+          {item.title}
+        </a>
+      );
+    },
+    [updateChannel]
+  );
+
   return (
     <LinkTreeLayout seoData={seoData}>
       <div className="container-linktree pt-6">
@@ -101,9 +114,7 @@ const LinkTree = ({ userProfile, channels }: TProps) => {
             <h1 className="profile-about">About</h1>
             <div className="profile-bio">{userProfile?.bio}</div>
             <div className="social_media flex flex-col">
-              {channels.map((el, i) => (
-                <Button key={el.ID} name={el.title} url={el.url} index={i} />
-              ))}
+              {channels.map(renderItem)}
             </div>
           </div>
         </section>

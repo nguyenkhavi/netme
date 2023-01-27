@@ -3,7 +3,7 @@ import { uuidv4 } from "@firebase/util";
 import { useMutation, UseMutationOptions } from "react-query";
 import { TError } from "../../types/global";
 import { channelColRef, firebaseAuth } from "../firebase";
-import { TCreateChannel } from "./dto";
+import { TCreateChannel, TUpdateChannel } from "./dto";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 export const useCreateChannel = (
@@ -22,6 +22,29 @@ export const useCreateChannel = (
         createdAt: new Date().toISOString(),
         ID,
       });
+      return getDoc(docRef);
+    },
+    {
+      ...options,
+    }
+  );
+};
+
+export const useUpdateChannel = (
+  options: UseMutationOptions<DocumentData, TError, TUpdateChannel>
+) => {
+  return useMutation<DocumentData, TError, TUpdateChannel>(
+    (dto) => {
+      const docRef = doc(channelColRef, dto.ID);
+
+      setDoc(
+        docRef,
+        {
+          ...dto,
+          updatedAt: new Date().toISOString(),
+        },
+        { merge: true }
+      );
       return getDoc(docRef);
     },
     {

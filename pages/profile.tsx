@@ -299,15 +299,18 @@ export default function Profile() {
                     <i className="fas fa-university mr-2 text-lg text-blueGray-400"></i>
                     University of Computer Science
                   </div>
-                  <div className="mb-2 text-blueGray-600">
+                  <div className="mb-2 text-blueGray-600 flex">
                     {data.map((item) => (
-                      <button
+                      <div
                         key={item.ID}
-                        className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-3 py-1 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                        type="button"
+                        className="flex flex-col bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-3 py-1 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                       >
-                        {item.title}
-                      </button>
+                        <h5>{item.title}</h5>
+                        <div className="flex items-center text-white">
+                          <i className="fas text-xs fa-arrow-pointer mr-1"></i>
+                          <p className="text-xs">{item.totalClick || 0}</p>
+                        </div>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -315,19 +318,15 @@ export default function Profile() {
                   <div className="flex flex-wrap justify-center">
                     <div className="w-full lg:w-9/12 px-4">
                       <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
-                        An artist of considerable range, Jenna the name taken by
-                        Melbourne-raised, Brooklyn-based Nick Murphy writes,
-                        performs and records all of his own music, giving it a
-                        warm, intimate feel with a solid groove structure. An
-                        artist of considerable range.
+                        {userProfile?.bio}
                       </p>
-                      <a
+                      {/* <a
                         href="#pablo"
                         className="font-normal text-lightBlue-500"
                         onClick={(e) => e.preventDefault()}
                       >
                         Show more
-                      </a>
+                      </a> */}
                     </div>
                   </div>
                 </div>

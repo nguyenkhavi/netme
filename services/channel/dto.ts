@@ -5,8 +5,14 @@ export type TCreateChannel = {
   url: string;
 };
 
+export type TUpdateChannel = {
+  ID: string;
+  totalClick: number;
+};
+
 export type TChannel = TTimestamp & {
   title: string;
   url: string;
   userID: string;
+  totalClick?: number;
 };
