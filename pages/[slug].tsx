@@ -4,6 +4,12 @@ import Image from "next/image";
 import React from "react";
 import { useGetChannelsByUserId } from "../services/channel/query";
 import { useGetUserProfileBySlug } from "../services/userProfile/query";
+import { GetServerSideProps } from "next";
+import { getDocs, limit, query, where } from "firebase/firestore";
+import { channelColRef, userProfileColRef } from "../services/firebase";
+import { TUserProfile } from "../services/userProfile/dto";
+import { formatListDocument } from "../helper";
+import { TChannel } from "../services/channel/dto";
 
 const colors = Array(10)
   .fill(["#F4F1DE", "#E07A5F", "#81B29A", "#F2CC8F"])
@@ -27,14 +33,7 @@ function Button(props) {
   );
 }
 
-function LinkTree() {
-  const router = useRouter();
-  const { slug = "" } = router.query;
-  const { data: userProfile } = useGetUserProfileBySlug({ slug: String(slug) });
-  const { data: channels = [] } = useGetChannelsByUserId({
-    userID: userProfile?.uid,
-  });
-
+const LinkTree = ({ userProfile, channels }: TProps) => {
   return (
     <div className="container-linktree pt-6">
       <section className="profile">
@@ -56,7 +55,7 @@ function LinkTree() {
               src={checkmarkCircleSharp}
             /> */}
             </h1>
-            <h2 className="profile-slug">@{slug}</h2>
+            <h2 className="profile-slug">@{userProfile.slug}</h2>
             <div className="profile-bio  mt-2">
               {(userProfile?.jobTitles || []).join(" / ")}
             </div>
@@ -73,5 +72,41 @@ function LinkTree() {
       </section>
     </div>
   );
-}
+};
+
+type TParams = {
+  slug?: string;
+};
+type TProps = { userProfile: TUserProfile; channels: TChannel[] };
+
+export const getServerSideProps: GetServerSideProps<TProps, TParams> = async (
+  context
+) => {
+  const slug = context.params.slug;
+  const userProfileQuery = query(
+    userProfileColRef,
+    where("slug", "==", slug),
+    limit(1)
+  );
+  const snapshot = await getDocs(userProfileQuery);
+  const userProfile = snapshot.docs.length
+    ? (snapshot.docs[0].data() as TUserProfile)
+    : null;
+
+  let channels: TChannel[] = [];
+  if (userProfile.uid) {
+    const channelsQuery = query(
+      channelColRef,
+      where("userID", "==", userProfile.uid)
+    );
+    const channelsSnapshot = await getDocs(channelsQuery);
+    channels = formatListDocument<TChannel[]>(channelsSnapshot);
+  }
+  return {
+    props: {
+      userProfile,
+      channels,
+    },
+  };
+};
 export default LinkTree;

@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "next/app";
-import Head from "next/head";
 import Router from "next/router";
 
 import PageChange from "../component/PageChange/PageChange";
@@ -12,7 +11,6 @@ import "react-toastify/dist/ReactToastify.css";
 import "../styles/tailwind.css";
 import "../services/firebase";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { INFO } from "../constants/author";
 import { ToastContainer } from "react-toastify";
 // import "styles/global.css";
 
@@ -50,15 +48,6 @@ export default class MyApp extends App {
     const Layout = Component.layout || (({ children }) => <>{children}</>);
     return (
       <React.Fragment>
-        <Head>
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-          />
-          <title>
-            {INFO.PRODUCT} by {INFO.WEBSITE}
-          </title>
-        </Head>
         <QueryClientProvider client={queryClient}>
           <Layout>
             <Component {...pageProps} />
