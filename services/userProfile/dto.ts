@@ -6,6 +6,7 @@ export type TCreateUserProfile = Partial<User> & {
   location?: string;
   jobTitles?: string[];
   bio?: string;
+  verified?: boolean;
 };
 
 export type TUserProfile = TTimestamp & TCreateUserProfile & Partial<User>;

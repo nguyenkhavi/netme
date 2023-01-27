@@ -82,10 +82,9 @@ const LinkTree = ({ userProfile, channels }: TProps) => {
               </div>
               <h1 className="profile-fullname">
                 {userProfile?.displayName}
-                {/* <IonIcon
-              className="profile-fullname-check_mark"
-              src={checkmarkCircleSharp}
-            /> */}
+                {!!userProfile.verified && (
+                  <i className="fas fa-circle-check profile-fullname-check_mark"></i>
+                )}
               </h1>
               <h2 className="profile-slug">@{userProfile.slug}</h2>
               {!!userProfile?.location && (
