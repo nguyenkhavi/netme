@@ -29,7 +29,7 @@ export default function FooterSmall({ absolute = false, linktree = false }) {
               <ul className="flex flex-wrap list-none md:justify-end  justify-center">
                 <li>
                   <a
-                    href="https://www.creative-tim.com?ref=nnjs-footer-small"
+                    href={INFO.REF}
                     className=" hover:text-blueGray-1200 text-sm font-semibold block py-1 px-3"
                   >
                     {INFO.WEBSITE}
@@ -37,23 +37,23 @@ export default function FooterSmall({ absolute = false, linktree = false }) {
                 </li>
                 <li>
                   <a
-                    href="https://www.creative-tim.com/presentation?ref=nnjs-footer-small"
+                    href={INFO.ABOUT_US}
                     className=" hover:text-blueGray-1200 text-sm font-semibold block py-1 px-3"
                   >
                     About Us
                   </a>
                 </li>
-                <li>
+                {/* <li>
                   <a
                     href="http://blog.creative-tim.com?ref=nnjs-footer-small"
                     className=" hover:text-blueGray-1200 text-sm font-semibold block py-1 px-3"
                   >
                     Blog
                   </a>
-                </li>
+                </li> */}
                 <li>
                   <a
-                    href="https://github.com/creativetimofficial/notus-nextjs/blob/main/LICENSE.md?ref=nnjs-footer-small"
+                    href={INFO.LICENSE}
                     className=" hover:text-blueGray-1200 text-sm font-semibold block py-1 px-3"
                   >
                     MIT License

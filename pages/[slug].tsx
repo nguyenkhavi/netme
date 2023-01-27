@@ -1,21 +1,25 @@
 import Image from "next/image";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { GetServerSideProps } from "next";
+import LinkTreeLayout from "../layouts/LinkTree";
 import { getDocs, limit, query, where } from "firebase/firestore";
 import { channelColRef, userProfileColRef } from "../services/firebase";
 import { TUserProfile } from "../services/userProfile/dto";
 import { formatListDocument } from "../helper";
 import { TChannel } from "../services/channel/dto";
 import FooterSmall from "../footers/FooterSmall";
+import { NextSeoProps } from "next-seo";
+import { INFO } from "../constants/author";
 
 const colors = Array(10)
-  .fill(["#F4F1DE", "#E07A5F", "#81B29A", "#F2CC8F"])
+  .fill(["#F4F1DE", "#E07A5F", "#3D405B", "#81B29A", "#F2CC8F"])
   .flat();
 
 function Button(props) {
   const style = {
     backgroundColor: colors[props.index],
+    color: colors[props.index] === "#3D405B" ? "white" : undefined,
   };
 
   return (
@@ -32,8 +36,37 @@ function Button(props) {
 }
 
 const LinkTree = ({ userProfile, channels }: TProps) => {
+  const seoData = useMemo<NextSeoProps>(() => {
+    const title = `${userProfile.displayName} | ${channels
+      .map((c) => c.title)
+      .join(" | ")} | ${INFO.PRODUCT}`;
+    return {
+      title,
+      description: title,
+      openGraph: {
+        url: `https://netme.nkvi.xyz/${userProfile.slug}`,
+        title,
+        description: title,
+        images: [
+          {
+            url: userProfile.photoURL,
+            width: 800,
+            height: 600,
+            alt: title,
+            type: "image/jpeg",
+          },
+        ],
+        siteName: INFO.PRODUCT,
+      },
+    };
+  }, [
+    channels,
+    userProfile.displayName,
+    userProfile.photoURL,
+    userProfile.slug,
+  ]);
   return (
-    <>
+    <LinkTreeLayout seoData={seoData}>
       <div className="container-linktree pt-6">
         <section className="profile">
           <div className="max-w-[300px]">
@@ -55,6 +88,12 @@ const LinkTree = ({ userProfile, channels }: TProps) => {
             /> */}
               </h1>
               <h2 className="profile-slug">@{userProfile.slug}</h2>
+              {!!userProfile?.location && (
+                <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-500 font-bold uppercase">
+                  <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-500"></i>{" "}
+                  {userProfile?.location}
+                </div>
+              )}
               <div className="profile-bio  mt-2">
                 {(userProfile?.jobTitles || []).join(" / ")}
               </div>
@@ -71,7 +110,7 @@ const LinkTree = ({ userProfile, channels }: TProps) => {
         </section>
       </div>
       <FooterSmall linktree />
-    </>
+    </LinkTreeLayout>
   );
 };
 

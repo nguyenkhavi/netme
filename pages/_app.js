@@ -12,6 +12,8 @@ import "../styles/tailwind.css";
 import "../services/firebase";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ToastContainer } from "react-toastify";
+import { DefaultSeo } from "next-seo";
+import { INFO } from "../constants/author";
 // import "styles/global.css";
 
 const queryClient = new QueryClient();
@@ -48,6 +50,39 @@ export default class MyApp extends App {
     const Layout = Component.layout || (({ children }) => <>{children}</>);
     return (
       <React.Fragment>
+        <DefaultSeo
+          title={`${INFO.PRODUCT} by ${INFO.NAME}`}
+          description={`${INFO.PRODUCT} by ${INFO.NAME}`}
+          // openGraph={{
+          //   url: "https://www.url.ie/a",
+          //   title: "Open Graph Title",
+          //   description: "Open Graph Description",
+          //   images: [
+          //     {
+          //       url: "https://www.example.ie/og-image-01.jpg",
+          //       width: 800,
+          //       height: 600,
+          //       alt: "Og Image Alt",
+          //       type: "image/jpeg",
+          //     },
+          //     {
+          //       url: "https://www.example.ie/og-image-02.jpg",
+          //       width: 900,
+          //       height: 800,
+          //       alt: "Og Image Alt Second",
+          //       type: "image/jpeg",
+          //     },
+          //     { url: "https://www.example.ie/og-image-03.jpg" },
+          //     { url: "https://www.example.ie/og-image-04.jpg" },
+          //   ],
+          //   siteName: "SiteName",
+          // }}
+          // twitter={{
+          //   handle: "@handle",
+          //   site: "@site",
+          //   cardType: "summary_large_image",
+          // }}
+        />
         <QueryClientProvider client={queryClient}>
           <Layout>
             <Component {...pageProps} />

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Image from "next/image";
 
 import Navbar from "../navbars/AuthNavbar";
 import Footer from "../footers/Footer";
@@ -159,11 +160,17 @@ export default function Profile() {
                 <div className="flex flex-wrap justify-center">
                   <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
                     <div className="relative">
-                      <img
-                        alt="..."
-                        src="/img/team-2-800x800.jpg"
-                        className="shadow-xl rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
-                      />
+                      <div className="absolute -m-16 -ml-20 lg:-ml-16 max-w-172-px">
+                        <Image
+                          alt="..."
+                          src={
+                            userProfile?.photoURL || "/img/team-2-800x800.jpg"
+                          }
+                          width={172}
+                          height={172}
+                          className="rounded-full"
+                        />
+                      </div>
                     </div>
                   </div>
                   <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
@@ -216,13 +223,15 @@ export default function Profile() {
                   <h3 className="text-4xl font-semibold leading-normal mb-2 text-blueGray-700">
                     {userProfile?.displayName}
                   </h3>
-                  <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
-                    <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>{" "}
-                    Los Angeles, California
-                  </div>
+                  {!!userProfile?.location && (
+                    <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
+                      <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>{" "}
+                      {userProfile?.location}
+                    </div>
+                  )}
                   <div className="mb-2 text-blueGray-600 mt-10">
                     <i className="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
-                    Solution Manager - Creative Tim Officer
+                    {(userProfile?.jobTitles || []).join(" / ")}
                   </div>
                   <div className="mb-2 text-blueGray-600">
                     <i className="fas fa-university mr-2 text-lg text-blueGray-400"></i>
