@@ -1,15 +1,13 @@
-import { useRouter } from "next/router";
 import Image from "next/image";
 
 import React from "react";
-import { useGetChannelsByUserId } from "../services/channel/query";
-import { useGetUserProfileBySlug } from "../services/userProfile/query";
 import { GetServerSideProps } from "next";
 import { getDocs, limit, query, where } from "firebase/firestore";
 import { channelColRef, userProfileColRef } from "../services/firebase";
 import { TUserProfile } from "../services/userProfile/dto";
 import { formatListDocument } from "../helper";
 import { TChannel } from "../services/channel/dto";
+import FooterSmall from "../footers/FooterSmall";
 
 const colors = Array(10)
   .fill(["#F4F1DE", "#E07A5F", "#81B29A", "#F2CC8F"])
@@ -35,42 +33,45 @@ function Button(props) {
 
 const LinkTree = ({ userProfile, channels }: TProps) => {
   return (
-    <div className="container-linktree pt-6">
-      <section className="profile">
-        <div className="max-w-[300px]">
-          <div className="mb-5 text-center">
-            <div className="profile-picture">
-              <Image
-                src={userProfile?.photoURL || "/img/team-3-800x800.jpg"}
-                alt={userProfile?.displayName}
-                width={128}
-                height={128}
-                className="rounded-full"
-              />
-            </div>
-            <h1 className="profile-fullname">
-              {userProfile?.displayName}
-              {/* <IonIcon
+    <>
+      <div className="container-linktree pt-6">
+        <section className="profile">
+          <div className="max-w-[300px]">
+            <div className="mb-5 text-center">
+              <div className="profile-picture">
+                <Image
+                  src={userProfile?.photoURL || "/img/team-3-800x800.jpg"}
+                  alt={userProfile?.displayName}
+                  width={128}
+                  height={128}
+                  className="rounded-full"
+                />
+              </div>
+              <h1 className="profile-fullname">
+                {userProfile?.displayName}
+                {/* <IonIcon
               className="profile-fullname-check_mark"
               src={checkmarkCircleSharp}
             /> */}
-            </h1>
-            <h2 className="profile-slug">@{userProfile.slug}</h2>
-            <div className="profile-bio  mt-2">
-              {(userProfile?.jobTitles || []).join(" / ")}
+              </h1>
+              <h2 className="profile-slug">@{userProfile.slug}</h2>
+              <div className="profile-bio  mt-2">
+                {(userProfile?.jobTitles || []).join(" / ")}
+              </div>
+            </div>
+
+            <h1 className="profile-about">About</h1>
+            <div className="profile-bio">{userProfile?.bio}</div>
+            <div className="social_media flex flex-col">
+              {channels.map((el, i) => (
+                <Button key={el.ID} name={el.title} url={el.url} index={i} />
+              ))}
             </div>
           </div>
-
-          <h1 className="profile-about">About</h1>
-          <div className="profile-bio">{userProfile?.bio}</div>
-          <div className="social_media flex flex-col">
-            {channels.map((el, i) => (
-              <Button key={el.ID} name={el.title} url={el.url} index={i} />
-            ))}
-          </div>
-        </div>
-      </section>
-    </div>
+        </section>
+      </div>
+      <FooterSmall linktree />
+    </>
   );
 };
 
