@@ -8,4 +8,4 @@ export type TCreateUserProfile = Partial<User> & {
   bio?: string;
 };
 
-export type TUserProfile = TTimestamp & TCreateUserProfile & User;
+export type TUserProfile = TTimestamp & TCreateUserProfile & Partial<User>;

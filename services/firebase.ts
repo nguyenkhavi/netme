@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GithubAuthProvider, GoogleAuthProvider } from "firebase/auth";
 import { collection, getFirestore } from "firebase/firestore";
+import { getStorage, ref } from "firebase/storage";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -43,3 +44,7 @@ githubProvider.addScope("repo");
 export const firestore = getFirestore(app);
 export const channelColRef = collection(firestore, "channels");
 export const userProfileColRef = collection(firestore, "userProfiles");
+
+export const storage = getStorage(app);
+export const getStorageRef = (filename = "") =>
+  ref(storage, `images/${filename}`);

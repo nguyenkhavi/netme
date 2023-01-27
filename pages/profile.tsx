@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
 
 import Navbar from "../navbars/AuthNavbar";
@@ -7,13 +7,36 @@ import { useCreateChannel } from "../services/channel/mutation";
 import { TCreateChannel } from "../services/channel/dto";
 import { useGetChannelsByUserId } from "../services/channel/query";
 import { useGetUserProfile } from "../services/userProfile/query";
+import { useCreateUserProfile } from "../services/userProfile/mutation";
+
 import { toast } from "react-toastify";
+import { useUploadFile } from "../services/file/mutation";
 
 export default function Profile() {
   const [showModal, setShowModal] = useState(false);
-  const { data: userProfile } = useGetUserProfile({
+  const inputFile = useRef<HTMLInputElement | null>(null);
+  const { mutateAsync: uploadFile } = useUploadFile({});
+  const { data: userProfile, refetch: refetchUserProfile } = useGetUserProfile({
     onSuccess: (profile) => {
       if (profile?.slug) window.location.hash = profile?.slug;
+    },
+  });
+  const { mutate: updateUserProfile } = useCreateUserProfile({
+    onSettled: () => {
+      refetchUserProfile();
+    },
+    onSuccess: () => {
+      toast(`New avatar updated!`, {
+        position: "top-right",
+        type: "success",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     },
   });
 
@@ -39,6 +62,35 @@ export default function Profile() {
     title: "",
     url: "",
   });
+
+  const handlePickFile: React.ChangeEventHandler<HTMLInputElement> = async (
+    e
+  ) => {
+    e.preventDefault();
+    const file = e.target?.files[0];
+
+    if (!file) return;
+    const photoURL = await uploadFile(file);
+    updateUserProfile({ photoURL });
+
+    // uploadTask.on(
+    //   "state_changed",
+    //   (snapshot) => {
+    //     const progress = Math.round(
+    //       (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+    //     );
+    //     setProgresspercent(progress);
+    //   },
+    //   (error) => {
+    //     alert(error);
+    //   },
+    //   () => {
+    //     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+    //       setImgUrl(downloadURL);
+    //     });
+    //   }
+    // );
+  };
   const handleChange =
     (name: keyof typeof state) =>
     ({ target }) => {
@@ -49,6 +101,9 @@ export default function Profile() {
     };
   const handleSubmit = () => {
     createChannel(state);
+  };
+  const handleAvatarPress = () => {
+    inputFile.current.click();
   };
   return (
     <>
@@ -168,9 +223,16 @@ export default function Profile() {
                           }
                           width={172}
                           height={172}
-                          className="rounded-full"
+                          onClick={handleAvatarPress}
+                          className="rounded-full cursor-pointer"
                         />
                       </div>
+                      <input
+                        ref={inputFile}
+                        onChange={handlePickFile}
+                        type="file"
+                        hidden
+                      />
                     </div>
                   </div>
                   <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">

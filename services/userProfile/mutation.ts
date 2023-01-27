@@ -17,11 +17,15 @@ export const useCreateUserProfile = (
     ["useCreateUserProfile", user?.uid],
     (dto) => {
       const docsRef = doc(userProfileColRef, user?.uid || "DEFAULT_PATH");
-      setDoc(docsRef, {
-        createdAt: new Date().toISOString(),
-        ...dto,
-        updatedAt: new Date().toISOString(),
-      });
+      setDoc(
+        docsRef,
+        {
+          createdAt: new Date().toISOString(),
+          ...dto,
+          updatedAt: new Date().toISOString(),
+        },
+        { merge: true }
+      );
       return getDoc(docsRef);
     },
     {

@@ -3,6 +3,6 @@ export type TError = {
   message: string;
 };
 export type TTimestamp = {
-  ID: string;
-  createdAt: string;
+  ID?: string;
+  createdAt?: string;
 };

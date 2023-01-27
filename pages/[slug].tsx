@@ -39,7 +39,7 @@ const LinkTree = ({ userProfile, channels }: TProps) => {
   const seoData = useMemo<NextSeoProps>(() => {
     const title = `${userProfile.displayName} | ${channels
       .map((c) => c.title)
-      .join(" | ")} | ${INFO.PRODUCT}`;
+      .join(", ")} | ${INFO.PRODUCT}`;
     return {
       title,
       description: title,
@@ -131,7 +131,7 @@ export const getServerSideProps: GetServerSideProps<TProps, TParams> = async (
   const snapshot = await getDocs(userProfileQuery);
   const userProfile = snapshot.docs.length
     ? (snapshot.docs[0].data() as TUserProfile)
-    : null;
+    : {};
 
   let channels: TChannel[] = [];
   if (userProfile.uid) {
