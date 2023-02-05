@@ -18,7 +18,7 @@ export default function FooterSmall({ absolute = false, linktree = false }) {
               <div className="text-sm text-blueGray-800 font-semibold py-1 text-center md:text-left">
                 Copyright © {new Date().getFullYear()}{" "}
                 <a
-                  href="https://www.creative-tim.com?ref=nnjs-footer-small"
+                  href={INFO.REF}
                   className="text-blueGray-500 hover:text-blueGray-800 text-sm font-semibold py-1"
                 >
                   {INFO.WEBSITE}
