@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Balancer, { Provider } from "react-wrap-balancer";
+// import Balancer, { Provider } from "react-wrap-balancer";
 // components
 
 import Navbar from "../navbars/AuthNavbar";
@@ -21,7 +21,7 @@ export default function Landing({ heroes = [] }: TProps) {
     router.push("/" + slug);
   };
   return (
-    <Provider>
+    <>
       <Navbar />
       <main>
         <div className="relative pt-16 pb-32 flex content-center items-center justify-center min-h-screen-75">
@@ -38,9 +38,9 @@ export default function Landing({ heroes = [] }: TProps) {
             ></span>
           </div>
           <div className="container relative mx-auto">
-            <div className="items-center flex flex-wrap">
+            <div className="items-center flex flex-wrap flex-col">
               <div className="w-full lg:w-6/12 px-4 ml-auto mr-auto text-center">
-                <div className="pr-12">
+                <div className="">
                   <h1 className="text-white font-semibold text-5xl">
                     Your story starts with us.
                   </h1>
@@ -513,7 +513,7 @@ export default function Landing({ heroes = [] }: TProps) {
         </section>
       </main>
       <Footer />
-    </Provider>
+    </>
   );
 }
 
